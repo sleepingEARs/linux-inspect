@@ -1,0 +1,9 @@
+# 本机工具数据, 不入库
+.mimosa/
+.zcodeignore
+
+# 巡检报告产物
+巡检报告_*.txt
+巡检报告_*.json
+inspect_*.txt
+inspect_*.json

@@ -1,0 +1,3 @@
+# 统一 LF 行尾: 防止 Windows 编辑后 CRLF 导致 bash 语法错误 (done\r 后接 < 报 unexpected token)
+*.sh text eol=lf
+*.md text eol=lf
