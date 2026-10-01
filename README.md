@@ -6,9 +6,9 @@ A pure-Bash Linux host inspection tool: one command collects 7 categories of che
 
 Main script: `linux_inspect.sh`
 
-**Current version**: v1.2.0 (see the "版本历史" comment block at the top of the script for the changelog)
+**Current version**: v1.2.1 (see the "版本历史" comment block at the top of the script for the changelog)
 
-> **Note**: report content is generated in **Chinese** (the tool targets Chinese-language ops environments). Exit codes, thresholds and the JSON output structure are language-neutral and easy to consume programmatically.
+> **Note**: report content is generated in **Chinese** (the tool targets Chinese-language ops environments). The `-h` help output is bilingual English/Chinese. Exit codes, thresholds and the JSON output structure are language-neutral and easy to consume programmatically.
 
 ## Quick Start
 

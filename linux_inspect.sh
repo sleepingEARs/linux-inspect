@@ -1,7 +1,43 @@
 #!/usr/bin/env bash
 # =============================================================================
-#  linux_inspect.sh — Linux 主机巡检脚本（纯 Bash，无框架依赖）
+#  linux_inspect.sh — Linux Host Inspection Script (pure Bash, zero deps)
+#                      Linux 主机巡检脚本（纯 Bash，无框架依赖）
 #
+#  ============================== English ==================================
+#  Supported distros:
+#    RHEL / CentOS 6~9 / Rocky / Alma / Fedora
+#    Ubuntu 14.04+ / Debian 7+ / Linux Mint
+#    openEuler / Kylin / UOS / Anolis / Alibaba Cloud Linux / TencentOS
+#    SLES 12+ (basic checks)
+#  Supported init: systemd & SysV init (auto-detected, per-check fallback)
+#
+#  Scope:  system / performance (CPU·memory·load·processes) / disk / network /
+#          security / services / logs & kernel
+#  Report: text/JSON report (verdict + alert list + per-section details),
+#          named 巡检报告_<host>_<time>.txt by default (report body is
+#          Chinese; use --ascii-name for an ASCII filename)
+#
+#  Usage:
+#    bash linux_inspect.sh [options]
+#      -o DIR        report output directory (default: cwd, auto-created)
+#      -f FORMAT     report format: text (default) | json
+#      -q, --quiet   quiet mode, print only the report file path (cron/scripts)
+#      --stdout      also print the full report to the terminal when finished
+#      --fast        fast mode: skip large-file scan & SSL certificate check
+#      --ascii-name  ASCII report filename: inspect_<host>_<time>.<ext>
+#                    (avoids encoding issues with Zabbix/ELK/cross-platform copy)
+#      --no-large-file-scan  skip the large-file scan (faster on big disks)
+#      --skip-ssl-check      skip the SSL certificate expiry scan
+#  Exit codes: 0 = all checks passed   1 = critical issues found
+#              2 = warnings found      3 = script runtime error
+#
+#  Notes: fully read-only — no system configuration is modified. Run as root
+#         for complete data; non-root runs degrade checks involving
+#         /etc/shadow, lastb, firewall rules and system logs, and the report
+#         says so. The report contains sensitive data (ports/accounts) and
+#         is created with permission 600 automatically.
+#
+#  ============================== 中文 =====================================
 #  兼容发行版:
 #    RHEL / CentOS 6~9 / Rocky / Alma / Fedora
 #    Ubuntu 14.04+ / Debian 7+ / Linux Mint
@@ -42,6 +78,7 @@
 #          报告预建 600 权限并校验写盘结果; find 表达式改数组传参;
 #          timeout 补 -k SIGKILL; 近期大文件扫描排除容器存储目录;
 #          新增 --ascii-name 报告文件名选项(对接监控平台采集)
+#  v1.2.1  帮助信息(-h)改为英中双语(英文在前), 其余行为不变
 #------------------------------------------------------------------------------
 
 #------------------------------ 可调参数（按需修改） --------------------------
@@ -90,7 +127,7 @@ SKIP_SSL_CHECK=0              # 1=跳过 (由 --skip-ssl-check/--fast 置位)
 
 #------------------------------------------------------------------------------
 
-SCRIPT_VERSION="1.2.0"
+SCRIPT_VERSION="1.2.1"
 SCRIPT_NAME="linux_inspect.sh"
 export LC_ALL=C   # 解析外部命令输出 (df/ps/sort 等) 对 locale 免疫; 报告中文为字面量不受影响
 
